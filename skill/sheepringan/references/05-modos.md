@@ -31,15 +31,15 @@ Sobre o gasto: um trecho de 6,6 s leva uns 7 minutos de GPU, uns 5 centavos de d
 | `--para` | No que vira. Em `add`, não comece com "add" |
 | `--desc` | Uma frase em inglês descrevendo o que está na foto. Fixa a descrição; sem ela o programa descreve sozinho e às vezes descreve a camada errada |
 | `--margem` | Pixels de folga em volta da área refeita: 10 justo, 20 normal, 40 folgado |
-| `--clip` | Segundos do trecho: copie o valor que o `preparar_video.py` imprimiu |
+| `--clip` | Segundos de cada clipe: copie o valor que o `preparar_video.py` imprimiu. Até 158 quadros vira um clipe só; trecho mais longo usa `--clip 6` e o Openjutsu emenda vários clipes |
 | `--seed` | Muda para sair outro resultado. Rodar de novo com tudo igual continua do último clipe pronto |
 | `--resolucao` | `736p` (padrão). `1080p` é uns 2,5 vezes mais lento e pede muito mais memória (não testado) |
 | `--sem-contorno` | Só `change`: não manda o contorno antigo. Troca a silhueta, mas perde o guia das mãos e dos braços |
-| `--todos` | Mantém **todas** as ocorrências que o `--sam` achar, em vez de só a maior. Para vários alvos, separados por vírgula (`"t-shirt, arms"`). Opção nova: **não testada** na GPU |
-| `--caixa x,y,largura,altura` | Só `add`: onde o objeto aparece, em fração da tela (0 a 1). Tem que caber o personagem, os gestos e a sombra |
+| `--todos` | Mantém **todas** as ocorrências que o `--sam` achar, em vez de só a maior. Necessário com vários alvos separados por vírgula (`--alvo "t-shirt, arms" --sam "t-shirt, arm"`). Testado em 02/11/2026 |
+| `--caixa x,y,largura,altura` | Só `add`: onde o objeto aparece, em fração da tela (0 a 1). Tem que caber o personagem, os gestos e a sombra. Com a câmera em movimento, a caixa tem que cobrir **todo o trajeto** do objeto na tela |
 | `--acao` | Só `add`: o que o objeto ou personagem faz, em inglês |
 
-Por padrão o script mantém só a maior ocorrência do que o `--sam` achar (uma coisa por vez). Para trocar várias de uma vez, veja `--todos` acima.
+Por padrão o script mantém só a maior ocorrência do que o `--sam` achar (uma coisa por vez). Sem `--todos`, num pedido de camiseta e braços, só ficaria a maior das duas.
 
 ## Trocar roupa ou objeto (`change`) — testado, ótimo
 
@@ -58,6 +58,21 @@ Por que `--alvo top` e `--sam hoodie`: o `--sam` acha o moletom **no vídeo**; o
 
 Rosto, boca e mãos seguem o vídeo real e o áudio é o original. O contorno antigo é mantido (uma regata trocada por camisa de flanela continua sem manga).
 
+### Roupa que cobre o tronco e os braços — testado, funcionou
+
+Para trocar a camiseta e as mangas de uma vez, nomeie as duas coisas e ligue o `--todos` (sem ele só a maior ficaria):
+
+```bash
+python /root/sheepringan/objeto.py --modo change --todos \
+  --video /root/trabalho/parte_a.mp4 --foto /root/trabalho/ref_roupa.png --rotulo roupa2 \
+  --alvo "t-shirt, arms" --sam "t-shirt, arm" \
+  --para "<a roupa nova, com mangas>" \
+  --desc "<a roupa nova, em uma frase, com cor, material e detalhes>" \
+  --margem 20 --clip 6.603
+```
+
+Testado com 158 quadros: 7 minutos de GPU. **Defeito visto:** a manga do braço mais perto da câmera saiu com a tatuagem aparecendo, porque a referência tinha a tatuagem. **O que estiver errado na referência costuma ir para o vídeo.** Confira a imagem com calma antes de gastar GPU (`04-video.md`).
+
 ## Trocar o cenário (`background`) — testado, ótimo (trecho de 2,3 s)
 
 `cenario.sh`:
@@ -73,11 +88,11 @@ python /root/sheepringan/objeto.py --modo background \
 
 A pessoa fica; o resto vira cinza e é refeito, mantendo o movimento da câmera. Testamos com 2,3 s (56 quadros).
 
-## Adicionar um objeto ou personagem (`add`) — testado uma vez, funcionou
+## Adicionar um objeto ou personagem (`add`) — testado 3 vezes, funcionou (com um defeito)
 
-Receita que funcionou (01/11/2026): a referência é um quadro do próprio vídeo **sem o personagem**, mais a imagem do personagem, juntos por um gerador de imagens (ver `04-video.md`).
+A referência é um quadro do próprio vídeo **sem o personagem ou o objeto**, mais a imagem dele, juntos por um gerador de imagens (ver `04-video.md`). Esse resultado é a `--foto`.
 
-`adicionar.sh`:
+`adicionar.sh` (personagem em cima de uma mesa):
 
 ```bash
 python /root/sheepringan/objeto.py --modo add \
@@ -90,11 +105,27 @@ python /root/sheepringan/objeto.py --modo add \
   --acao "She stands on the table, looks up at the camera, waves one robotic hand hello and smiles"
 ```
 
-Resultado do teste: clipe de 73 quadros (3 s), uns 3 minutos de GPU, com sombra de contato e o aceno gerados, e o personagem **atrás** da mão real. A caixa (`--caixa`) é fixa na tela, então a câmera tem que estar parada, e ela precisa ser grande o bastante para o personagem, o gesto e a sombra.
+A `--caixa` precisa ser grande o bastante para o personagem, o gesto e a sombra. O que se viu em cada teste (01 e 02/11/2026, RTX 4090):
+
+| Teste | Trecho | GPU | Resultado |
+|---|---|---|---|
+| Personagem em cima da mesa, acenando | 73 quadros (3 s), 1 clipe | uns 3 min | Sombra de contato e aceno gerados; o personagem ficou **atrás** da mão real |
+| Objeto **parado** com a **câmera em movimento** (uma moto numa sala) | 260 quadros, `--clip 6`, 3 clipes | 11,5 min | Funcionou com uma caixa grande cobrindo todo o trajeto do objeto na tela (`--caixa 0.0,0.12,1.0,0.62`) e o `--acao` dizendo que ele fica parado no mesmo ponto do chão. **Defeito:** por cerca de 1 s apareceu uma segunda moto pequena ao fundo |
+| Personagem que **sai de um lugar e sobe na mão real**, falando | 226 quadros, `--clip 6`, 2 clipes | 8,8 min | A mão real ficou preservada dentro da caixa e a boca mexeu de verdade, em sincronia |
+
+Para o personagem **falar**: ponha a voz dele no áudio do trecho (só a voz do personagem, sem a de quem filma) antes de preparar o vídeo, e peça no `--acao` que a boca acompanhe o áudio, em inglês (por exemplo, "its mouth moves in sync with the audio while it speaks"). Para trocar o áudio do vídeo pela voz do personagem (o vídeo não é recodificado; se a voz for mais curta, o `preparar_video.py` completa com silêncio):
+
+```
+ffmpeg -i take.mp4 -i voz.mp3 -map 0:v -map 1:a -c:v copy -c:a aac take_com_voz.mp4
+```
+
+No vídeo final, o áudio que vale é o do arquivo `--original` do `montar.py`: se o personagem fala, monte com um original que já leve a voz dele (o `take_com_voz.mp4`).
+
+Para o **defeito do objeto repetido** ao fundo: na montagem, corte o trecho em que ele aparece, ou rode de novo com outro `--seed` (uma sugestão, sem teste).
 
 Truque de montagem: entre no clipe gerado quando a mão real já saiu da caixa, com um flash branco curto (`06-resultado.md`).
 
-É um teste só. Trate como "funcionou uma vez", não como garantido.
+São poucos testes. Trate como "funcionou nesses casos", não como garantido. Não foi testado: mais de um objeto na mesma cena e objeto que se move pelo cenário (a caixa é fixa; só o caso do objeto parado com a câmera em movimento foi testado).
 
 ## Remover (`remove`) — NÃO testado
 

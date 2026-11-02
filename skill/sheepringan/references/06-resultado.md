@@ -9,7 +9,7 @@ python "SCRIPTS/resultado.py" roupa --saida saida
 (`roupa` é o `--rotulo` que você usou.) O programa procura nesta ordem:
 
 1. O vídeo **pronto, com áudio**, em `/root/ComfyUI/output/h3_oneclick_edit/` (`objeto.py`), `h3_oneclick_swap/` (`trocar_pessoa.py`) ou `relay/` (`relay.py`).
-2. Se não achar, é porque **a montagem final falhou** (quase sempre por causa do áudio menor que o vídeo, que o `preparar_video.py` evita). Mas o trecho já foi gerado e está, **sem áudio**, em `/root/ComfyUI/output/h3_chains/<run>/generation/clips/`. O `objeto.py` imprimiu o `<run>` na linha `RUN edit_xxxxxxxxxx`. Passe esse nome:
+2. Se não achar, é porque **a montagem final falhou**. A causa que vimos (3 vezes) é sempre a mesma: o áudio era **menor** que o vídeo. Com áudio maior que o vídeo a montagem final passou, e o `preparar_video.py` garante isso. Mesmo assim o trecho já foi gerado e está, **sem áudio**, em `/root/ComfyUI/output/h3_chains/<run>/generation/clips/`. O `objeto.py` imprimiu o `<run>` na linha `RUN edit_xxxxxxxxxx`. Passe esse nome:
 
 ```
 python "SCRIPTS/resultado.py" roupa --run edit_xxxxxxxxxx --saida saida

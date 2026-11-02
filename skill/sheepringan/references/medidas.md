@@ -6,12 +6,13 @@ Leia isto antes de prometer um resultado. Tudo abaixo foi medido em 01/11/2026, 
 
 | Modo | Estado | O que se viu |
 |---|---|---|
-| Trocar roupa ou objeto (`change`) | **Testado, ótimo** | Trecho de 6,6 s (158 quadros) em 7 min de GPU. Rosto, boca e mãos seguiram o vídeo real; o áudio é o original |
+| Trocar roupa ou objeto (`change`) | **Testado, ótimo** | Trecho de 6,6 s (158 quadros) em 7 min de GPU. Rosto, boca e mãos seguiram o vídeo real; o áudio é o original. Também testado cobrindo **tronco e braços** (`--todos`): 158 quadros, 7 min. Defeito: a tatuagem que estava na referência apareceu na manga do braço perto da câmera |
 | Trocar cenário (`background`) | **Testado, ótimo** | Trecho de 2,3 s (56 quadros) em 2,5 min. Só testamos nesse tamanho |
-| Adicionar objeto ou personagem (`add`) | **Testado uma vez, funcionou** | 3 s (73 quadros) em uns 3 min. Sombra de contato e aceno gerados; o personagem ficou atrás da mão real. Caixa fixa, câmera parada |
+| Adicionar objeto ou personagem (`add`) | **Testado 3 vezes, funcionou** (um defeito) | (1) Personagem acenando em cima de uma mesa: 73 quadros, uns 3 min, sombra de contato e aceno gerados, atrás da mão real. (2) Objeto parado com **câmera em movimento** (uma moto numa sala): 260 quadros, 3 clipes, 11,5 min, com uma caixa grande cobrindo todo o trajeto; **defeito:** uma segunda moto pequena ao fundo por cerca de 1 s. (3) Personagem que sai de um lugar e sobe na **mão real**, falando: 226 quadros, 2 clipes, 8,8 min, mão preservada e boca em sincronia com o áudio |
 | Trocar pessoa, relay com LoRA | **Testado** | Semelhança de rosto (SFace, acima de 0,363 conta como a mesma pessoa): **0,92 quando a pessoa entra no próprio vídeo, 0,68 em vídeo de outro ator** |
 | Trocar pessoa, fluxo simples | **Testado em 1 vídeo com pessoa e 3 com um mascote** | Roupa, tatuagem e movimento saem bem; rosto parecido, não idêntico (a foto de referência era feita por IA) |
 | Personagem não humano | **Funciona em parte** | O guia de movimento é humano, então a cabeça tende a sair humana. No relay, 12 s estouraram a memória da placa duas vezes |
+| Trechos longos (mais de 158 quadros) | **Testado só no modo adicionar** | 226 quadros (2 clipes) e 260 quadros (3 clipes), com `--clip 6`. Nos outros modos, não |
 | Remover (`remove`) | **NÃO testado** | O comando monta o fluxo certo, mas nunca rodou na GPU |
 | Várias pessoas, "From picture", relight, corrigir rosto | **NÃO testados**, sem script aqui | Existem no Openjutsu, na interface web dele |
 | Mac e Linux no computador da pessoa | **NÃO testados** | Só o Windows 11 (PowerShell e Git Bash). Os scripts usam só Python padrão, ssh, scp e ffmpeg |
@@ -27,9 +28,14 @@ Estes programas foram escritos a partir dos scripts que rodaram de verdade em 01
 - `remoto.py` contra uma máquina real da Vast;
 - `instalar_maquina.sh` numa máquina vazia (as versões fixadas, os endereços dos modelos e o PyTorch foram conferidos um a um na internet; o que ele faz copia o instalador que deu certo);
 - `trocar_pessoa.py` e `relay.py`: o fluxo que eles montam é **idêntico, nó a nó**, ao dos scripts originais testados na GPU. Só mudou a forma de passar os parâmetros;
-- `objeto.py` é cópia fiel do arquivo que rodou na GPU.
+- `objeto.py` é cópia fiel do arquivo que rodou na GPU (só o fim de linha foi trocado para o do Linux).
 
 Quem rodar pela primeira vez de ponta a ponta: fique de olho, e se algo quebrar, o `problemas.md` e o log (`remoto.py log NOME`) dizem onde.
+
+## Sobre o áudio e a contagem de quadros (visto na GPU)
+
+- Com o áudio **menor** que o vídeo, a montagem final falhou 3 vezes (`H3 Source Timeline audio window 0:158 exceeds 0:157`). Com o áudio **maior** que o vídeo, ela passou. O `preparar_video.py` deixa sempre maior.
+- Um trecho de 157 quadros em vez de 158 cai para 141 e gera mais clipes. A contagem tem que ser exata.
 
 ## Quanto demora
 
@@ -39,8 +45,10 @@ Quem rodar pela primeira vez de ponta a ponta: fique de olho, e se algo quebrar,
 | Trecho de 2,3 s (56 quadros) | 2,5 min de GPU |
 | Trecho de 3 s (73 quadros) | uns 3 min |
 | Trecho de 6,6 s (158 quadros) | 7 min |
+| Trecho de 9,4 s (226 quadros, 2 clipes) | 8,8 min |
+| Trecho de 10,8 s (260 quadros, 3 clipes) | 11,5 min |
 
-Dá uns 2,5 a 2,7 segundos de GPU por quadro, a 736p.
+Dá uns 2,3 a 2,7 segundos de GPU por quadro, a 736p.
 
 ## Quanto custou (conferido nas cobranças da Vast em 01/11/2026)
 

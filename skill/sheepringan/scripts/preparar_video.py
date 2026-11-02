@@ -132,10 +132,14 @@ def main():
     quadros, taxa = contar_quadros(saida)
     s = sondar(saida)
     ok = quadros == n and taxa == f"{FPS}/1" and s["audio"] and s["dur_audio"] + 1e-3 >= n / FPS
-    clip = round(n / FPS + 0.02, 3)
+    # Ate 158 quadros: --clip do tamanho do trecho (um clipe so). Mais que isso: --clip 6, e o Openjutsu emenda
+    # varios clipes (testado com 226 e 260 quadros).
+    clip = round(n / FPS + 0.02, 3) if n <= MAX_PADRAO else 6
     print(f"Pronto: {saida}")
     print(f"  quadros: {quadros} (pedido {n}) | taxa: {taxa} | video: {n / FPS:.3f} s | audio: {s['dur_audio']:.3f} s | {s['largura']}x{s['altura']}")
     print(f"  Use no objeto.py:  --clip {clip}")
+    if n > MAX_PADRAO:
+        print(f"  Trecho comprido ({n} quadros): vira varios clipes de ate 6 s. Testado com 226 e 260 quadros, so no modo adicionar.")
     print(json.dumps({"arquivo": str(saida), "quadros": quadros, "fps": FPS, "segundos": round(n / FPS, 3), "clip": clip, "ok": ok}))
     if not ok:
         print("ATENCAO: a conferencia falhou (quadros, taxa ou audio). Nao mande esse arquivo para a GPU.")

@@ -83,6 +83,17 @@ class TesteVideo(unittest.TestCase):
         r, saida = self.prep("celular.mp4")
         self.assertEqual(sonda(saida)["quadros"], 158)
 
+    def test_trecho_comprido_pede_clip_6(self):
+        r, saida = self.prep("celular.mp4", "--quadros", "175")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual(sonda(saida)["quadros"], 175)
+        self.assertRegex(r.stdout, r"--clip 6\s*\n")
+        self.assertIn("varios clipes", r.stdout)
+
+    def test_ate_158_quadros_o_clip_e_do_tamanho_do_trecho(self):
+        r, _ = self.prep("celular.mp4", "--quadros", "158")
+        self.assertIn("--clip 6.603", r.stdout)
+
     def test_quadros_invalidos_sao_recusados_com_a_lista_certa(self):
         r, _ = self.prep("celular.mp4", "--quadros", "60")
         self.assertNotEqual(r.returncode, 0)

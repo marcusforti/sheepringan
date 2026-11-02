@@ -30,9 +30,9 @@ Depois abra o Claude Code (se já estava aberto, feche e abra de novo) e escreva
 
 | Modo | Estado |
 |---|---|
-| Trocar roupa ou objeto | **Testado, ótimo** (rosto, boca, mãos e áudio reais) |
+| Trocar roupa ou objeto | **Testado, ótimo** (rosto, boca, mãos e áudio reais), inclusive tronco e braços |
 | Trocar cenário | **Testado, ótimo** (trecho de 2,3 s) |
-| Adicionar objeto ou personagem | **Testado uma vez, funcionou** (câmera parada, caixa fixa) |
+| Adicionar objeto ou personagem | **Testado 3 vezes, funcionou** (mesa, objeto parado com câmera em movimento, personagem falando na mão real); um defeito visto |
 | Trocar a pessoa | **Testado**: semelhança de rosto de 0,92 no próprio vídeo e 0,68 no vídeo de outro ator |
 | Personagem que não é humano | **Funciona em parte** |
 | Remover | **Não testado** |
@@ -49,7 +49,7 @@ Os números, o que foi medido e o que **não** passou por teste de ponta a ponta
 | Máquina 2, até as 23h (95 GB baixados) | US$ 0,55 | US$ 0,13 | **US$ 3,71** | US$ 4,44 |
 
 - O que pesa é o **preço do download por GB**, que varia mais de dez vezes de uma máquina para outra. O `vast.py ofertas` calcula o custo total estimado de cada oferta, não só o preço da hora.
-- Um trecho de 6,6 s leva uns 7 minutos de GPU (uns 5 centavos). Um de 2,3 s leva 2,5 minutos.
+- Um trecho de 6,6 s leva uns 7 minutos de GPU (uns 5 centavos). Um de 2,3 s leva 2,5 minutos. Os trechos longos que testamos (9 a 11 s) levaram de 9 a 11,5 minutos.
 - **Máquina ligada cobra, e parada ainda cobra o disco.** Só apagar encerra. RTX 4090 ligada o mês inteiro: uns US$ 300 a 350. Interruptível e parada fora de uso, com 2 h por dia: uns US$ 42 (estimativas).
 - A Vast pede pelo menos US$ 5 por recarga.
 

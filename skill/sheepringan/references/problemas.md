@@ -35,10 +35,11 @@ Cada linha: o que aparece, a causa e o que fazer. Os erros em inglês vêm do pr
 | `ERRO_PROMPT ... Value not in list` ou arquivo de modelo faltando | A instalação não terminou | `instalar_maquina.sh --conferir` e rode o instalador de novo |
 | `sem no com o titulo: ...` | O Openjutsu mudou os nomes dos nós (versão mais nova que a testada) | Reinstale com as versões testadas (sem `--ultimas`) |
 | `ERRO_EXEC` com `out of memory` | Trecho comprido demais para a placa | Encurte o trecho. No relay, 12 s estouraram duas vezes |
-| `H3 Source Timeline audio window 0:158 exceeds 0:157` | O áudio era menor que o vídeo | Use o `preparar_video.py`. O clipe já foi gerado: `resultado.py ROTULO --run edit_xxxx` (`06-resultado.md`) |
+| `H3 Source Timeline audio window 0:158 exceeds 0:157` | O áudio era menor que o vídeo (visto 3 vezes; com áudio maior, a montagem final passa) | Use o `preparar_video.py`. O clipe já foi gerado: `resultado.py ROTULO --run edit_xxxx` (`06-resultado.md`) |
 | `VHS failed to extract audio ... Error opening output file -` | O vídeo não tem trilha de áudio | Use o `preparar_video.py` (põe um silêncio) |
 | O programa fica esperando e nada acontece | Trabalho longo | `remoto.py log NOME`. Um trecho de 6,6 s leva uns 7 minutos |
 | `STATUS success` mas não acho o arquivo | A montagem final falhou | `resultado.py ROTULO --run edit_xxxx` com o nome da linha `RUN` |
+| Saíram mais clipes do que o esperado (o trecho "caiu para 141 quadros") | O trecho tinha 157 quadros em vez de 158, ou outro número fora de 17×k + 5 | Confira a contagem exata antes de subir. O `preparar_video.py` já faz isso |
 
 ## No resultado
 
@@ -51,6 +52,8 @@ Cada linha: o que aparece, a causa e o que fazer. Os erros em inglês vêm do pr
 | Pele dura e pálida | O modelo deixa a pele mais nítida e menos saturada (nitidez 51 contra 29 no original) | Na montagem, ajuste a cor; o "Fix colours" do Openjutsu existe, mas não foi testado |
 | O personagem não humano vira uma pessoa | O guia de movimento tem forma humana | Ver `05-modos.md` |
 | Roupa laranja em vez de vermelha | A foto de referência saiu com a cor errada | Refaça a foto pedindo a cor ("vermelho, não laranja") |
+| A tatuagem (ou outro detalhe) aparece na manga | Estava na foto de referência: o que estiver errado nela costuma ir para o vídeo | Refaça a referência e confira antes de gastar GPU |
+| Apareceu um segundo objeto pequeno ao fundo por cerca de 1 s (visto ao adicionar uma moto) | Defeito do modelo | Corte esse trecho na montagem, ou tente outro `--seed` (sugestão, sem teste) |
 
 ## Dinheiro
 

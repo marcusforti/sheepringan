@@ -126,7 +126,8 @@ baixa_um() { # pasta nome url
       echo "BAIXOU $nome ($((atual / 1048576)) MB)"
       return 0
     fi
-    aria2c -q -c -x 16 -s 16 -k 20M --file-allocation=none --max-tries=10 --retry-wait=5       --allow-overwrite=true --auto-file-renaming=false -d "$dir" -o "$nome" "$url"
+    aria2c -q -c -x 16 -s 16 -k 20M --file-allocation=none --max-tries=10 --retry-wait=5 \
+      --allow-overwrite=true --auto-file-renaming=false -d "$dir" -o "$nome" "$url"
     rc=$?
     atual=$(stat -c %s "$dir/$nome" 2>/dev/null || echo 0)
     if [ -n "$esperado" ]; then
