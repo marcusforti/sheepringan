@@ -50,18 +50,20 @@ Quem rodar pela primeira vez de ponta a ponta: fique de olho, e se algo quebrar,
 
 Dá uns 2,3 a 2,7 segundos de GPU por quadro, a 736p.
 
-## Quanto custou (conferido nas cobranças da Vast em 01/11/2026)
+## Quanto custou (cobranças finais da Vast, conferidas em 02/11/2026)
 
-| | Máquina 1 | Máquina 2 (até 23h) |
+| | Máquina 1 | Máquina 2 (ficou ligada uns 3 h) |
 |---|---|---|
 | Preço da hora | US$ 0,42 | US$ 0,49 (com o disco) |
-| GPU | US$ 0,26 | US$ 0,55 |
-| Disco | US$ 0,04 | US$ 0,13 |
+| GPU | US$ 0,26 | US$ 1,27 |
+| Disco | US$ 0,04 | US$ 0,29 |
 | Download (modelos) | **US$ 0,14** (52,4 GB a US$ 0,003 por GB) | **US$ 3,71** (95 GB a US$ 0,039 por GB) |
 | Upload | | US$ 0,05 |
-| **Total** | **US$ 0,44** | **US$ 4,44** |
+| **Total** | **US$ 0,44** | **US$ 5,32** |
 
-O que pesa é o **download** (o preço por GB varia mais de dez vezes entre máquinas) e o **tempo parado**. Um trecho de 6,6 s custa uns 5 centavos de GPU.
+As duas somaram uns **US$ 5,75**: GPU uns US$ 1,5, disco uns US$ 0,3, download US$ 3,85 e upload US$ 0,05 (a Vast fecha as cobranças por dia, então os centavos da última podem variar).
+
+O que pesa é o **download** (o preço por GB varia mais de dez vezes entre máquinas) e o **tempo parado**: a máquina 2 ficou ligada muito mais do que o necessário, esperando, e foram essas horas que fizeram a GPU e o disco crescerem. Um trecho de 6,6 s custa uns 5 centavos de GPU.
 
 | Se deixar ligada (estimativa, os preços mudam) | Custo |
 |---|---|

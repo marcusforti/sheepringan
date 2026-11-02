@@ -60,5 +60,6 @@ Cada linha: o que aparece, a causa e o que fazer. Os erros em inglês vêm do pr
 | O que aparece | Causa | O que fazer |
 |---|---|---|
 | A conta veio muito maior que a estimativa | Quase sempre o preço do download (`gastos` mostra a coluna `download`), ou a máquina ficou ligada | Compare com `ofertas` na próxima. Apague sempre no fim |
+| Mandei apagar, não deu erro, mas a máquina continua na lista e cobrando | O `vastai destroy instance` pergunta `[y/N]` e, sem resposta, aborta sem apagar | Use `python "SCRIPTS/vast.py" destruir ID --confirmo`. Se for à mão: `echo y | vastai destroy instance ID`, e confira com `vastai show instances` |
 | A máquina aparece como `exited` | A Vast parou (crédito acabou, ou foi parada à mão) | Parada ainda cobra o disco. Baixe o que puder e apague |
 | A máquina sumiu | Possível causa: crédito zerado por muito tempo | O que estava nela se perdeu. Alugue outra e instale de novo |

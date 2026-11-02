@@ -20,7 +20,7 @@ No Windows, o `vast.py` já liga o modo UTF-8 sozinho. Se você usar o `vastai` 
 1. Entrar em https://cloud.vast.ai/ e criar a conta. Confirmar o e-mail.
 2. **Crédito:** menu Billing > Add Credit. O mínimo é US$ 5. Aceita cartão, BitPay ou Crypto.com.
 
-Quanto colocar: nas duas sessões reais que medimos, o total foi de US$ 0,44 e US$ 4,44, e quase toda a diferença foi o preço do download dos modelos (ver `02-maquina.md`). US$ 5 a US$ 10 cobrem a primeira vez com folga.
+Quanto colocar: nas duas sessões reais que medimos, o total foi de US$ 0,44 e US$ 5,32 (juntas, uns US$ 5,75). A maior parte da diferença foi o preço do download dos modelos (ver `02-maquina.md`); o resto foi uma máquina que ficou ligada 3 horas, boa parte esperando. US$ 5 a US$ 10 cobrem a primeira vez com folga.
 
 Avise a pessoa: **se o crédito acabar, a Vast para a máquina** (e, se o saldo continuar negativo, pode apagá-la com tudo que estiver dentro). Por isso os resultados devem ser baixados logo que ficarem prontos.
 

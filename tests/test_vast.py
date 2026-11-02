@@ -155,6 +155,37 @@ class TesteVast(Casa):
         self.assertIn("nao ha mais nenhuma maquina cobrando", r.stdout)
         self.assertFalse((self.casa / "maquina.json").exists())
 
+    def instancia_777(self, **extra):
+        d = self.estado_atual()
+        d["instancias"] = [{"id": 777, "gpu_name": "RTX 4090", "actual_status": "running", "dph_total": 0.4, "label": "sheepringan"}]
+        d.update(extra)
+        self.escrever(d)
+
+    def test_destruir_nao_depende_de_resposta_de_teclado(self):
+        # a ferramenta de verdade aborta sem apagar se ninguem responde; aqui ela so apaga porque o script manda -y e um "y"
+        self.instancia_777()
+        r = self.vast("destruir", "777", "--confirmo")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        destroy = next(c for c in self.chamadas() if c[:2] == ["destroy", "instance"])
+        self.assertIn("-y", destroy)
+        self.assertEqual(self.estado_atual()["instancias"], [])
+
+    def test_destruir_com_ferramenta_antiga_que_nao_conhece_o_y(self):
+        self.instancia_777(sem_flag_y=True)
+        r = self.vast("destruir", "777", "--confirmo")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        tentativas = [c for c in self.chamadas() if c[:2] == ["destroy", "instance"]]
+        self.assertEqual(len(tentativas), 2)
+        self.assertNotIn("-y", tentativas[1])
+        self.assertEqual(self.estado_atual()["instancias"], [])
+
+    def test_destruir_avisa_se_a_ferramenta_abortou(self):
+        self.instancia_777(sempre_aborta=True)
+        r = self.vast("destruir", "777", "--confirmo")
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("abortou", r.stdout)
+        self.assertEqual(len(self.estado_atual()["instancias"]), 1)
+
     def test_status_avisa_que_parada_ainda_cobra(self):
         d = self.estado_atual()
         d["instancias"] = [{"id": 5, "gpu_name": "RTX 4090", "actual_status": "exited", "dph_total": 0.09, "label": "x", "start_date": 1}]

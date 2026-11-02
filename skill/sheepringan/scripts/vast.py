@@ -68,14 +68,18 @@ def sem_cli():
     sys.exit(3)
 
 
-def chamar(*args, bruto=True, tempo=180):
-    """Roda a ferramenta vastai. Devolve (codigo, saida, erro). O UTF-8 evita o erro 'charmap' do Windows."""
+def chamar(*args, bruto=True, tempo=180, entrada=None):
+    """Roda a ferramenta vastai. Devolve (codigo, saida, erro). O UTF-8 evita o erro 'charmap' do Windows.
+
+    Sem `entrada`, o teclado fica fechado: uma pergunta da ferramenta nao trava nem responde sozinha.
+    """
     pre = prefixo_vast()
     if not pre:
         sem_cli()
     cmd = pre + list(args) + (["--raw"] if bruto else [])
     env = dict(os.environ, PYTHONUTF8="1", PYTHONIOENCODING="utf-8", NO_COLOR="1")
-    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", env=env, timeout=tempo)
+    teclado = {"input": entrada} if entrada is not None else {"stdin": subprocess.DEVNULL}
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", env=env, timeout=tempo, **teclado)
     return r.returncode, r.stdout, r.stderr
 
 
@@ -432,9 +436,16 @@ def cmd_destruir(a):
         print(f"Isto APAGA a maquina {a.id} e tudo que esta nela (modelos, videos, resultados). Nao tem volta.")
         print("Baixe os resultados antes. Quando a pessoa confirmar, rode de novo com --confirmo.")
         return 2
-    rc, out, err = chamar("destroy", "instance", str(a.id), "-y", bruto=False)
+    # O `destroy instance` pergunta [y/N] e, sem resposta, ABORTA sem apagar (e sai com codigo 0). Por isso vai o -y
+    # e tambem um "y" no teclado; versoes antigas da ferramenta nao conhecem o -y, entao tenta sem ele.
+    rc, out, err = chamar("destroy", "instance", str(a.id), "-y", bruto=False, entrada="y\n")
+    if rc != 0 and "unrecognized arguments" in (err or ""):
+        rc, out, err = chamar("destroy", "instance", str(a.id), bruto=False, entrada="y\n")
     if rc != 0:
         print("ERRO ao apagar:", (err or out).strip()[:400])
+        return 1
+    if "Aborted" in (out or ""):
+        print("A ferramenta da Vast abortou sem apagar. Tente de novo: python vast.py destruir", a.id, "--confirmo")
         return 1
     for _ in range(6):
         ids = {str(i.get("id")) for i in listar_instancias()}

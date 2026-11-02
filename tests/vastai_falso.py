@@ -47,7 +47,16 @@ elif cmd == "create instance":
 elif cmd == "ssh-url":
     print("ssh://root@127.0.0.1:2222")
 elif cmd == "destroy instance":
+    # Igual a ferramenta de verdade: pergunta [y/N] e, sem resposta, ABORTA sem apagar e sai com codigo 0.
     idn = int(args[2])
+    tem_y = "-y" in args or "--yes" in args
+    if st.get("sem_flag_y") and tem_y:  # versao antiga, que nao conhece o -y
+        print("vastai: error: unrecognized arguments: -y", file=sys.stderr)
+        sys.exit(2)
+    resposta = "y" if tem_y else sys.stdin.readline().strip().lower()
+    if resposta != "y" or st.get("sempre_aborta"):
+        print("Aborted.")
+        sys.exit(0)
     st["instancias"] = [i for i in st["instancias"] if i["id"] != idn]
     salvar()
     print("destroying instance %d." % idn)

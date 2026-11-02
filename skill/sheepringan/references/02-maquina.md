@@ -23,7 +23,7 @@ A hora da GPU custa quase o mesmo em todo lugar, mas o download dos modelos (uns
 | 1 | 52,4 GB | US$ 0,003 | **US$ 0,14** |
 | 2 | 95 GB | US$ 0,039 | **US$ 3,71** |
 
-A segunda baixou menos de duas vezes mais dados (95 GB contra 52 GB), mas o download custou mais de 26 vezes mais, só por causa do preço por GB. No total, as duas sessões custaram US$ 0,44 e US$ 4,44. Por isso o `ofertas` ordena pelo **custo total estimado**, e não pelo preço da hora.
+A segunda baixou menos de duas vezes mais dados (95 GB contra 52 GB), mas o download custou mais de 26 vezes mais, só por causa do preço por GB. No total, as duas sessões custaram US$ 0,44 e US$ 5,32; a segunda também ficou ligada 3 horas, boa parte esperando. Por isso o `ofertas` ordena pelo **custo total estimado**, e não pelo preço da hora.
 
 Também vale lembrar: apagar a máquina e alugar outra **repete o download**. Escolha bem na primeira vez.
 

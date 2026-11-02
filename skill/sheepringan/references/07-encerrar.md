@@ -29,6 +29,8 @@ python "SCRIPTS/vast.py" status
 
 Tem que aparecer `Conferido: nao ha mais nenhuma maquina cobrando` e, no `status`, `Nenhuma maquina alugada agora`. Se aparecer outra máquina, mostre à pessoa: pode ser de outro projeto dela. Não apague sem ela dizer que é dela.
 
+**Cuidado se for apagar direto pela ferramenta da Vast:** `vastai destroy instance ID` faz uma pergunta `[y/N]` e, **sem resposta, aborta sem apagar** (e termina sem erro, então parece que deu certo). Use `echo y | vastai destroy instance ID` e confira depois com `vastai show instances`. O `vast.py destruir` já faz isso, e só diz "apagada" depois de ver que a máquina saiu da lista.
+
 ## 4. Quanto custou de verdade
 
 ```

@@ -46,8 +46,9 @@ Os números, o que foi medido e o que **não** passou por teste de ponta a ponta
 | Sessão real | GPU | Disco | Download dos modelos | Total |
 |---|---|---|---|---|
 | Máquina 1 (52 GB baixados) | US$ 0,26 | US$ 0,04 | **US$ 0,14** | US$ 0,44 |
-| Máquina 2, até as 23h (95 GB baixados) | US$ 0,55 | US$ 0,13 | **US$ 3,71** | US$ 4,44 |
+| Máquina 2, ligada uns 3 h (95 GB baixados) | US$ 1,27 | US$ 0,29 | **US$ 3,71** | US$ 5,32 (com upload de US$ 0,05) |
 
+- As duas sessões somaram uns **US$ 5,75**: GPU uns US$ 1,5, disco uns US$ 0,3, download US$ 3,85 e upload US$ 0,05. A máquina 2 ficou ligada uns 3 h, boa parte esperando.
 - O que pesa é o **preço do download por GB**, que varia mais de dez vezes de uma máquina para outra. O `vast.py ofertas` calcula o custo total estimado de cada oferta, não só o preço da hora.
 - Um trecho de 6,6 s leva uns 7 minutos de GPU (uns 5 centavos). Um de 2,3 s leva 2,5 minutos. Os trechos longos que testamos (9 a 11 s) levaram de 9 a 11,5 minutos.
 - **Máquina ligada cobra, e parada ainda cobra o disco.** Só apagar encerra. RTX 4090 ligada o mês inteiro: uns US$ 300 a 350. Interruptível e parada fora de uso, com 2 h por dia: uns US$ 42 (estimativas).
