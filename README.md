@@ -41,6 +41,8 @@ Depois abra o Claude Code (se já estava aberto, feche e abra de novo) e escreva
 
 Os números, o que foi medido e o que **não** passou por teste de ponta a ponta estão em [`skill/sheepringan/references/medidas.md`](skill/sheepringan/references/medidas.md). Leia antes de prometer um resultado.
 
+**Aviso de honestidade:** o aluguel automático (`vast.py`), a conversa com a máquina (`remoto.py`) e o instalador (`instalar_maquina.sh`) foram escritos a partir dos scripts que rodaram de verdade em 01/11/2026 e passaram por testes automáticos com tudo de mentira. **Esta versão ainda não rodou de ponta a ponta numa máquina nova**, porque isso gasta dinheiro. Quem rodar primeiro: fique de olho, e se algo quebrar, pare, apague a máquina e veja os problemas conhecidos.
+
 ## Quanto custa (medido em 01/11/2026; os preços mudam)
 
 | Sessão real | GPU | Disco | Download dos modelos | Total |

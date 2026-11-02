@@ -25,7 +25,7 @@ Faça estas perguntas e guarde as respostas. São regras da licença do modelo e
 2. **Apague no fim.** Ao terminar, pergunte se pode apagar a máquina, apague e confira com `status`. Se a pessoa sumir no meio, avise que a máquina continua cobrando.
 3. **Segredo não passa pelo chat.** A chave da API da Vast quem cola no terminal é a pessoa. Se ela colar aqui, peça para trocar a chave depois. Nunca imprima nem grave chave em arquivo.
 4. **Só mexa no que é seu.** Alugue só pelo `vast.py`. Apague só a máquina que esta sessão alugou (rótulo `sheepringan`). Se `conta` mostrar outra máquina ligada, avise a pessoa em vez de apagar.
-5. **Seja honesto.** Leia `references/medidas.md` antes de prometer um resultado. Diga o que foi testado e o que não foi.
+5. **Seja honesto.** Leia `references/medidas.md` antes de prometer um resultado. Diga o que foi testado e o que não foi. Avise a pessoa de que o aluguel, a conversa com a máquina e o instalador ainda não rodaram de ponta a ponta numa máquina nova (só em partes e em testes de mentira). Se uma etapa falhar duas vezes pelo mesmo motivo, **pare e mostre o erro**: a máquina está cobrando enquanto você tenta de novo. Se precisar, apague-a.
 6. **Escreva para leigo.** Frases curtas. Use a tabela de termos no fim deste arquivo.
 
 ## Primeiro passo, sempre
