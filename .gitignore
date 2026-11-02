@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.env
+*.log
+# Lista local do teste de privacidade: tem nomes reais e nunca vai para o GitHub.
+tests/proibidos.local.txt
+# Videos, fotos e modelos nunca entram aqui.
+*.mp4
+*.mov
+*.mkv
+*.avi
+*.png
+*.jpg
+*.jpeg
+*.safetensors
